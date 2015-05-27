@@ -1,0 +1,12 @@
+..\..\output\key.o: ..\..\User\key.c
+..\..\output\key.o: ..\..\User\key.h
+..\..\output\key.o: ..\..\Libraries\CMSIS\stm32f10x.h
+..\..\output\key.o: ..\..\Libraries\CMSIS\core_cm3.h
+..\..\output\key.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+..\..\output\key.o: ..\..\Libraries\CMSIS\system_stm32f10x.h
+..\..\output\key.o: ..\..\User\stm32f10x_conf.h
+..\..\output\key.o: ..\..\Libraries\FWlib\inc\stm32f10x_exti.h
+..\..\output\key.o: ..\..\Libraries\CMSIS\stm32f10x.h
+..\..\output\key.o: ..\..\Libraries\FWlib\inc\stm32f10x_gpio.h
+..\..\output\key.o: ..\..\Libraries\FWlib\inc\stm32f10x_rcc.h
+..\..\output\key.o: ..\..\Libraries\FWlib\inc\misc.h
