@@ -100,7 +100,7 @@ void ADC_Show(void)
 	unsigned char i = 0;
 	for(i = 0;i < 7;i ++)//输出7路电压值
 	{
-		p_ch[i] = (ADC_RCVTab[i]) * 3.3 / 4096.0;
+		p_ch[i] = (ADC_RCVTab[i]) * 3.3 / 4095.0;
 	//	printf("%4.2f   ",p_ch[i]);
 	}
 	

@@ -64,9 +64,9 @@ void DAC_INIT(void)
 
 void DAC_OUTPUT(unsigned int voltage1, unsigned int voltage2)
 {
-	 DAC_SetChannel1Data(DAC_Align_12b_R, (voltage1/5)*4096/3.3); //12位，右对齐。
+	 DAC_SetChannel1Data(DAC_Align_12b_R, (voltage1)*4096/3.3); //12位，右对齐。
 	 DAC_SoftwareTriggerCmd(DAC_Channel_1,ENABLE); // 触发DAC1
-	 DAC_SetChannel2Data(DAC_Align_12b_R, (voltage2/5)*4096/3.3); //12位，右对齐.
+	 DAC_SetChannel2Data(DAC_Align_12b_R, (voltage2)*4096/3.3); //12位，右对齐.
 	 DAC_SoftwareTriggerCmd(DAC_Channel_2,ENABLE); // 触发DAC1
 }
 

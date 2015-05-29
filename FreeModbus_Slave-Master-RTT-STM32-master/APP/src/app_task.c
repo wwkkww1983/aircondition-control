@@ -109,15 +109,16 @@ void thread_entry_AIAODIDO(void* parameter)
 	// analog input
 
     GPIO_DI_Pin=((uint16_t)0x0001);
-		DI_Input=0x80;
+		DI_Input=0x01;
+		
 
 		while((GPIO_DI_Pin & 0xffff) != 0)       //数字量输入值 传入寄存器
 		{
 			
 
-			if((GPIO_DI_Pin & 0x00ff) != 0)
+			
 	
-			{
+			
 
 			if(  GPIO_ReadInputDataBit(GPIOD,GPIO_DI_Pin))
 			{
@@ -129,13 +130,23 @@ void thread_entry_AIAODIDO(void* parameter)
 			}
 			
 			
-	   	}
+	   	
 			
-			else
-				
-						{
+			
+			
+		  DI_Input=	DI_Input <<1;
+			GPIO_DI_Pin=GPIO_DI_Pin<<1;
+		}
+		
+		
+		
+		    GPIO_DI_Pin=((uint16_t)0x0001);
+		    DI_Input=0x01;
 
-			if(  GPIO_ReadInputDataBit(GPIOD,GPIO_DI_Pin))
+		while((GPIO_DI_Pin & 0x00ff) != 0)
+		{
+
+			if(  GPIO_ReadInputDataBit(GPIOE,GPIO_DI_Pin))
 			{
 				ucSDiscInBuf[1]=	ucSDiscInBuf[1] | DI_Input ;
 			}
@@ -144,35 +155,8 @@ void thread_entry_AIAODIDO(void* parameter)
 				ucSDiscInBuf[1]=	ucSDiscInBuf[1] & (~DI_Input) ;
 			}
 			
-			
-	   	}
-			
-		  DI_Input=	DI_Input >>1;
-			GPIO_DI_Pin=GPIO_DI_Pin<<1;
-		}
-		
-		
-		    GPIO_DI_Pin=((uint16_t)0x0001);
-		    DI_Input=0x80;
-
-		while((GPIO_DI_Pin & 0x00ff) != 0)
-		{
-			
-
-
-	
-		
-			if(  GPIO_ReadInputDataBit(GPIOD,GPIO_DI_Pin))
-			{
-				ucSDiscInBuf[2]=	ucSDiscInBuf[2] | DI_Input ;
-			}
-			else
-			{
-				ucSDiscInBuf[2]=	ucSDiscInBuf[2] & (~DI_Input) ;
-			}
-			
 				
-		  DI_Input=	DI_Input >>1;
+		  DI_Input=	DI_Input <<1;
 			GPIO_DI_Pin=GPIO_DI_Pin<<1;
 		}
 		
@@ -184,10 +168,22 @@ void thread_entry_AIAODIDO(void* parameter)
 		
 		
 		
-		if((ucSCoilBuf[2]&0x1)==0x1)   // 启动自动模式
+		if((ucSCoilBuf[1]&0x0100)==0x0100)   // 启动自动模式
 		{
 		
 			//调节算法 确定输出量大小
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//调节算法 确定输出量大小结束
 			
 			
 			
@@ -213,18 +209,12 @@ void thread_entry_AIAODIDO(void* parameter)
 		{
 			unsigned int voltage_out_int_1,voltage_out_int_2;
 			
-		voltage_out_int_1=usSRegHoldBuf[0];
-		voltage_out_int_1=voltage_out_int_1 << 16;
-    voltage_out_int_1 =	usSRegHoldBuf[1];
-		voltage_out_1=(float) voltage_out_int_1;
+		voltage_out_int_1=(float)((float)usSRegHoldBuf[0]+(float)(usSRegHoldBuf[1]/10));
+		voltage_out_int_2=(float)((float)usSRegHoldBuf[2]+((float)usSRegHoldBuf[3]/10));
+	
 			
-		voltage_out_int_2=usSRegHoldBuf[2];
-		voltage_out_int_2=voltage_out_int_2 << 16;
-    voltage_out_int_2 =	usSRegHoldBuf[3];
-		voltage_out_2=(float) voltage_out_int_2;
+		DAC_OUTPUT(voltage_out_int_1,voltage_out_int_2 );//模拟输出
 			
-		DAC_OUTPUT(voltage_out_1,voltage_out_2 );//模拟输出
-					
 		 DO_OUT();//数字输出
 			
 		//手动模式结束	

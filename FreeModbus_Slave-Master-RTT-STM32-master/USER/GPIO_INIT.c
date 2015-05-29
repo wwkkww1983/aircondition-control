@@ -42,9 +42,9 @@ void DO_OUT(void)
 	
 	
 	unsigned char i=0;
-  unsigned char coilbit=0x8;
+  unsigned char coilbit=0x0001;
   unsigned short GPIO_Pin_DO;
-	coilbit=0x8;
+	coilbit=0x0001;
 		 GPIO_Pin_DO=GPIO_Pin_8;	
 	
 			for(i=0;i<8;i++)
@@ -56,26 +56,27 @@ void DO_OUT(void)
 					else
 						GPIO_ResetBits(GPIOE,GPIO_Pin_DO);
 					
-					coilbit=coilbit>>1;
+					coilbit=coilbit<<1;
 					GPIO_Pin_DO=GPIO_Pin_DO<<1;
 			}
 		//	GPIO_SetBits(GPIOE,GPIO_Pin_8);
 		//  GPIO_ResetBits(GPIOE,GPIO_Pin_8);
 			
-		 coilbit=0x8;
+		 coilbit=0x0100;
 		 GPIO_Pin_DO=GPIO_Pin_0;	
 			for(i=0;i<8;i++)
 			{
-				if((ucSCoilBuf[1]&coilbit)==coilbit )
+				if((ucSCoilBuf[0]&coilbit)==coilbit )
 				{	
 					GPIO_SetBits(GPIOF,GPIO_Pin_DO);
 				}
 					else
 						GPIO_ResetBits(GPIOF,GPIO_Pin_DO);
 					
-					coilbit=coilbit>>1;
+					coilbit=coilbit<<1;
 					GPIO_Pin_DO=GPIO_Pin_DO<<1;
 			}	
+			
 			
 }
 
