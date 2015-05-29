@@ -85,6 +85,7 @@ void thread_entry_AIAODIDO(void* parameter)
 	  //voltage_out_2=2;
 	   ADC_Configuration();
 	   GPIO_INIT();
+
    
 	while (1)
 	{
@@ -168,20 +169,104 @@ void thread_entry_AIAODIDO(void* parameter)
 		
 		
 		
-		if((ucSCoilBuf[1]&0x0100)==0x0100)   // 启动自动模式
+		if((ucSCoilBuf[0]&0x1000)==0x1000)   // 启动自动模式
 		{
 		
 			//调节算法 确定输出量大小
 			
+			if((usSRegInBuf[2]-usSRegHoldBuf[4]>2))//夏季制冷模式
+			{
+				
+				ucSCoilBuf[0]=0x01ff;//空调全起
+				usSRegHoldBuf[0]=3;
+				usSRegHoldBuf[1]=3;
+				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
 			
+			}
+						
+			if((usSRegInBuf[2]-usSRegHoldBuf[4]<=2))//夏季制冷模式
+			{
+				
+				ucSCoilBuf[0]=0x00c7;//空调开启一半
+				usSRegHoldBuf[0]=3;
+				usSRegHoldBuf[1]=3;
+				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
 			
+			}
 			
+  		if((usSRegInBuf[2]-usSRegHoldBuf[4]<=1))//夏季制冷模式
+			{
+				
+				ucSCoilBuf[0]=0x0041;//空调、水泵 各开一台（变频控制）
+				usSRegHoldBuf[0]=usSRegInBuf[2];
+				usSRegHoldBuf[1]=usSRegInBuf[2];
+				
+				if((usSRegInBuf[3]-usSRegHoldBuf[5]<=1))
+				{
+						ucSCoilBuf[0]=0x0000;//空调、水泵 各开一台（变频控制）
+					usSRegHoldBuf[0]=0;
+					usSRegHoldBuf[2]=0;
+					if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
+				}
 			
+			}
+	
+			//调节算法 确定输出量大小
 			
+			if((usSRegHoldBuf[4]-usSRegInBuf[2]>2))//冬季加热模式
+			{
+						ucSCoilBuf[0]=0x01ff;//空调全起
+						usSRegHoldBuf[0]=3;
+						usSRegHoldBuf[1]=3;
+						usSRegHoldBuf[3]=3;
+						usSRegHoldBuf[4]=3;
+				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
 			
+			}
+						
+			if((usSRegHoldBuf[4]-usSRegInBuf[2]<=2))//冬季加热模式
+			{
+				ucSCoilBuf[0]=0x00c7;//空调开启一半
+				usSRegHoldBuf[0]=3;
+				usSRegHoldBuf[1]=3;
+				usSRegHoldBuf[3]=3;
+				usSRegHoldBuf[4]=3;
+				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
 			
+			}
 			
+  		if((usSRegHoldBuf[4]-usSRegInBuf[2]<=1))//冬季加热模式
+			{
+				
+				ucSCoilBuf[0]=0x0041;//空调、水泵 各开一台（变频控制）
+				usSRegHoldBuf[0]=1;
+				usSRegHoldBuf[1]=1;
+				usSRegHoldBuf[2]=1;
+				usSRegHoldBuf[3]=1;		
+
+
+					if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+					{
+							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+					}
+			}
 			
+
 			
 			//调节算法 确定输出量大小结束
 			
@@ -190,11 +275,12 @@ void thread_entry_AIAODIDO(void* parameter)
 			
 			
 			
-		DAC_OUTPUT(voltage_out_1,voltage_out_2 );//模拟输出（<=3.3V）
-		usSRegHoldBuf[0]=voltage_out_1;
-		usSRegHoldBuf[1]=(int)(voltage_out_1*10)%10;
-		usSRegHoldBuf[2]=voltage_out_2;
-		usSRegHoldBuf[3]=(int)(voltage_out_2*10)%10;
+		voltage_out_1=(float)((float)usSRegHoldBuf[0]+(float)(usSRegHoldBuf[1]/10));
+		voltage_out_2=(float)((float)usSRegHoldBuf[2]+((float)usSRegHoldBuf[3]/10));
+	
+			
+		DAC_OUTPUT(voltage_out_1,voltage_out_2 );//模拟输出
+			
 		// Analog done
 
 
