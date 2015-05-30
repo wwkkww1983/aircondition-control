@@ -86,6 +86,7 @@ void thread_entry_AIAODIDO(void* parameter)
 	   ADC_Configuration();
 	   GPIO_INIT();
 
+
    
 	while (1)
 	{
@@ -227,8 +228,8 @@ void thread_entry_AIAODIDO(void* parameter)
 						ucSCoilBuf[0]=0x01ff;//空调全起
 						usSRegHoldBuf[0]=3;
 						usSRegHoldBuf[1]=3;
+						usSRegHoldBuf[2]=3;
 						usSRegHoldBuf[3]=3;
-						usSRegHoldBuf[4]=3;
 				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
 							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
@@ -241,8 +242,8 @@ void thread_entry_AIAODIDO(void* parameter)
 				ucSCoilBuf[0]=0x00c7;//空调开启一半
 				usSRegHoldBuf[0]=3;
 				usSRegHoldBuf[1]=3;
+				usSRegHoldBuf[2]=3;
 				usSRegHoldBuf[3]=3;
-				usSRegHoldBuf[4]=3;
 				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
 							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
