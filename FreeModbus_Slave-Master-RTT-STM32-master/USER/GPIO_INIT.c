@@ -42,7 +42,7 @@ void DO_OUT(void)
 	
 	
 	unsigned char i=0;
-  unsigned char coilbit=0x0001;
+  uint16_t coilbit=0x0001;
   unsigned short GPIO_Pin_DO;
 	coilbit=0x0001;
 		 GPIO_Pin_DO=GPIO_Pin_8;	
