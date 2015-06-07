@@ -7,7 +7,7 @@ void DI_INIT(void)
   
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;                 // …Ë÷√
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;          
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;          
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(GPIOD, &GPIO_InitStructure);
 	

@@ -244,7 +244,7 @@ void thread_entry_AIAODIDO(void* parameter)
 				usSRegHoldBuf[1]=3;
 				usSRegHoldBuf[2]=3;
 				usSRegHoldBuf[3]=3;
-				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
+	 if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
 							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
 					}
