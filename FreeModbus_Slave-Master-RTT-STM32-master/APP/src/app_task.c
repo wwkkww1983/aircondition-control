@@ -85,8 +85,8 @@ void thread_entry_AIAODIDO(void* parameter)
 	  //voltage_out_2=2;
 	   ADC_Configuration();
 	   GPIO_INIT();
-
-
+			ucSCoilBuf[0]=0xefff;
+				
    
 	while (1)
 	{
@@ -178,12 +178,12 @@ void thread_entry_AIAODIDO(void* parameter)
 			if((usSRegInBuf[2]-usSRegHoldBuf[4]>2))//夏季制冷模式
 			{
 				
-				ucSCoilBuf[0]=0x01ff;//空调全起
+				ucSCoilBuf[0]=0xfe00;//空调全起
 				usSRegHoldBuf[0]=3;
 				usSRegHoldBuf[1]=3;
 				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+							ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 			
 			}
@@ -191,12 +191,12 @@ void thread_entry_AIAODIDO(void* parameter)
 			if((usSRegInBuf[2]-usSRegHoldBuf[4]<=2))//夏季制冷模式
 			{
 				
-				ucSCoilBuf[0]=0x00c7;//空调开启一半
+				ucSCoilBuf[0]=0x0038;//空调开启一半
 				usSRegHoldBuf[0]=3;
 				usSRegHoldBuf[1]=3;
 				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+						ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 			
 			}
@@ -204,7 +204,7 @@ void thread_entry_AIAODIDO(void* parameter)
   		if((usSRegInBuf[2]-usSRegHoldBuf[4]<=1))//夏季制冷模式
 			{
 				
-				ucSCoilBuf[0]=0x0041;//空调、水泵 各开一台（变频控制）
+				ucSCoilBuf[0]=0x1fbe;//空调、水泵 各开一台（变频控制）
 				usSRegHoldBuf[0]=usSRegInBuf[2];
 				usSRegHoldBuf[1]=usSRegInBuf[2];
 				
@@ -215,7 +215,7 @@ void thread_entry_AIAODIDO(void* parameter)
 					usSRegHoldBuf[2]=0;
 					if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+							ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 				}
 			
@@ -225,28 +225,28 @@ void thread_entry_AIAODIDO(void* parameter)
 			
 			if((usSRegHoldBuf[4]-usSRegInBuf[2]>2))//冬季加热模式
 			{
-						ucSCoilBuf[0]=0x01ff;//空调全起
+						ucSCoilBuf[0]=0xfe00;//空调全起
 						usSRegHoldBuf[0]=3;
 						usSRegHoldBuf[1]=3;
 						usSRegHoldBuf[2]=3;
 						usSRegHoldBuf[3]=3;
 				if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+							ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 			
 			}
 						
 			if((usSRegHoldBuf[4]-usSRegInBuf[2]<=2))//冬季加热模式
 			{
-				ucSCoilBuf[0]=0x00c7;//空调开启一半
+				ucSCoilBuf[0]=0x0038;//空调开启一半
 				usSRegHoldBuf[0]=3;
 				usSRegHoldBuf[1]=3;
 				usSRegHoldBuf[2]=3;
 				usSRegHoldBuf[3]=3;
 	 if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+							ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 			
 			}
@@ -254,7 +254,7 @@ void thread_entry_AIAODIDO(void* parameter)
   		if((usSRegHoldBuf[4]-usSRegInBuf[2]<=1))//冬季加热模式
 			{
 				
-				ucSCoilBuf[0]=0x0041;//空调、水泵 各开一台（变频控制）
+				ucSCoilBuf[0]=0x1fbe;//空调、水泵 各开一台（变频控制）
 				usSRegHoldBuf[0]=1;
 				usSRegHoldBuf[1]=1;
 				usSRegHoldBuf[2]=1;
@@ -263,7 +263,7 @@ void thread_entry_AIAODIDO(void* parameter)
 
 					if((ucSDiscInBuf[0]&0xe000)   | (ucSDiscInBuf[1]&0x00ff))
 					{
-							ucSCoilBuf[0]=ucSCoilBuf[0] | 0x0800;
+							ucSCoilBuf[0]=ucSCoilBuf[0] & 0x17ff;
 					}
 			}
 			
